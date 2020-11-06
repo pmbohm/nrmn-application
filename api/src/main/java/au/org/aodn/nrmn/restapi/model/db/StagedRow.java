@@ -3,6 +3,7 @@ package au.org.aodn.nrmn.restapi.model.db;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
@@ -28,6 +29,8 @@ import java.util.Map;
 @Data
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "staged_row")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)

@@ -1,5 +1,6 @@
 package au.org.aodn.nrmn.restapi.repository;
 
+import au.org.aodn.nrmn.restapi.model.db.Site;
 import au.org.aodn.nrmn.restapi.model.db.Survey;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +21,6 @@ import java.util.Optional;
 public interface SurveyRepository extends JpaRepository<Survey, Integer>, JpaSpecificationExecutor<Survey> {
     @Query("SELECT t FROM #{#entityName} t WHERE t.id IN :ids")
     List<Survey> findByIdsIn(@Param("ids") List<Integer> ids);
+
+    Survey getBySiteAndSurveyDateAndDepth(Site site, Date date, Double depth);
 }

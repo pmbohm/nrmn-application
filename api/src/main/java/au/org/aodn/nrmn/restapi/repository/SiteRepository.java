@@ -25,6 +25,8 @@ public interface SiteRepository extends JpaRepository<Site, Integer>, JpaSpecifi
     @Query("SELECT s FROM Site s WHERE s.siteCode = :code")
     Optional<Site> findByCriteria(@Param("code")String siteCode);
 
+    Site getFirstBySiteCode(String siteCode);
+
     @Override
     @RestResource
     Page<Site> findAll(Pageable pageable);

@@ -23,6 +23,11 @@ public class IntegerFormatValidation extends BaseRowFormatValidation<Integer> {
         this.validValues = validValues;
     }
 
+    public IntegerFormatValidation(Function<StagedRow, String> getField, String columnTarget) {
+        this(getField, columnTarget, Collections.emptyList());
+    }
+
+
     @Override
     public Validated<StagedRowError, Integer> valid(StagedRow target) {
         return validFormat(getField, (input) -> {

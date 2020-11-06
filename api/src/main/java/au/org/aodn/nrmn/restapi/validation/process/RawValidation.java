@@ -153,7 +153,6 @@ public class RawValidation {
         return rowFormatted;
     }
 
-
     public List<StagedRowFormatted> preValidated(List<StagedRow> targets) {
         return targets
                 .stream()
@@ -164,6 +163,14 @@ public class RawValidation {
                                     seq.toHashMap(key -> key._1(), value -> value._2()));
                     return validatorsWithMap.toMaybe().map(this::toFormat).stream();
                 }).collect(Collectors.toList());
+    }
+
+    public Optional<StagedRowFormatted> preValidated(StagedRow target) {
+        val validatedRow = validate(target);
+        val validatorsWithMap =
+                validatedRow.map(seq ->
+                        seq.toHashMap(key -> key._1(), value -> value._2()));
+        return validatorsWithMap.toMaybe().map(this::toFormat).toOptional();
     }
 }
 
