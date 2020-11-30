@@ -25,7 +25,7 @@ pipeline {
         stage('container') {
             agent {
                 dockerfile {
-                    args '-v ${HOME}/.m2:/home/builder/.m2 -v ${HOME}/.cache:/home/builder/.cache -v ${HOME}/bin:${HOME}/bin'
+                    args '-v ${HOME}/.m2:/home/builder/.m2 -v ${HOME}/.cache:/home/builder/.cache -v ${HOME}/bin:${HOME}/bin -v /tmp:/master_tmp'
                     additionalBuildArgs '--build-arg BUILDER_UID=$(id -u)'
                 }
             }
@@ -46,6 +46,7 @@ pipeline {
                 }
                 stage('build') {
                     steps {
+                        sh 'echo --modules-folder /master_tmp/${JOB_NAME} >> ui/.yarnrc'
                         sh 'mvn -B -DskipTests clean compile'
                     }
                 }
