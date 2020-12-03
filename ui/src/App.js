@@ -23,6 +23,8 @@ import EntityList from "./components/data-entities/EntityList";
 import Alert from "@material-ui/lab/Alert";
 import {getFullPath} from "./components/utils/helpers";
 import AlertTitle from "@material-ui/lab/AlertTitle";
+import RightContextDrawer from "./components/layout/RightContextDrawer";
+import Grid from "@material-ui/core/Grid";
 
 const drawerWidth = 240;
 
@@ -53,6 +55,16 @@ export default function App()  {
   const classes = useStyles();
   const themeState = useSelector(state =>  state.theme);
   const leftSideMenuIsOpen = useSelector(state =>  state.toggle.leftSideMenuIsOpen);
+  const rightContextDrawerIsOpen = useSelector(state =>  state.toggle.rightContextDrawerIsOpen);
+
+
+  const rightContextDrawer = ()=> {
+    if (rightContextDrawerIsOpen) {
+      return <Grid item xs={3}>
+        <RightContextDrawer open={rightContextDrawerIsOpen}/>
+      </Grid>
+    }
+  }
 
   let theme = createMuiTheme({
     palette: {
@@ -67,6 +79,9 @@ export default function App()  {
       type: themeState.themeType ? "dark" : "light",
     },
     props: {
+      MuiListItem: {
+          dense: true
+      },
       MuiTextField: {
         variant: 'outlined',
         margin: "dense",
@@ -89,25 +104,36 @@ export default function App()  {
               [classes.contentShift]: leftSideMenuIsOpen
             })}
           >
-            <Switch>
-              <Route path={["/import-file/:fileID?"]} component={ImportPage} />
-              <Route path="/list-file" component={FileList} />
-              <Route path="/login" component={Login} />
-              <Route path="/form/:entityName/:id?" component={GenericForm} />
-              <Route path="/list/:entityName" component={EntityList} />
-              <Route path="/notfound" render={(props) =>
-                  <Alert severity="error"  >
-                    <AlertTitle>API Resource Not Found</AlertTitle>
-                    {`The requested resource ${getFullPath(props.location)} is not available`}
-                  </Alert>}
-              />
-              <Route render={(props) =>
-                  <Alert severity="error"  >
-                    <AlertTitle>Path Not Found</AlertTitle>
-                    The requested resource <strong>{getFullPath(props.location)}</strong> is not available
-                  </Alert>}
-              />
-            </Switch>
+            <Grid
+                container
+                direction="row"
+                spacing={2}
+                justify="space-between"
+                alignItems="stretch"
+            >
+            <Grid item xs={(rightContextDrawerIsOpen) ? 9: 12} >
+              <Switch>
+                <Route path={["/import-file/:fileID?"]} component={ImportPage} />
+                <Route path="/list-file" component={FileList} />
+                <Route path="/login" component={Login} />
+                <Route path="/form/:entityName/:id?" component={GenericForm} />
+                <Route path="/list/:entityName" component={EntityList} />
+                <Route path="/notfound" render={(props) =>
+                    <Alert severity="error"  >
+                      <AlertTitle>API Resource Not Found</AlertTitle>
+                      {`The requested resource ${getFullPath(props.location)} is not available`}
+                    </Alert>}
+                />
+                <Route render={(props) =>
+                    <Alert severity="error"  >
+                      <AlertTitle>Path Not Found</AlertTitle>
+                      The requested resource <strong>{getFullPath(props.location)}</strong> is not available
+                    </Alert>}
+                />
+              </Switch>
+            </Grid>
+              {rightContextDrawer()}
+            </Grid>
           </main>
         </Router>
       </ThemeProvider>

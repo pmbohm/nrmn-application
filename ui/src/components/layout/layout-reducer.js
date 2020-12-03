@@ -5,7 +5,8 @@ import {
 
 const toggleState = {
   leftSideMenuIsOpen: false,
-  logoutMenuOpen: false
+  logoutMenuOpen: false,
+  rightContextDrawerIsOpen: true // todo start closed
 }
 
 const toggleSlice = createSlice({
@@ -17,10 +18,13 @@ const toggleSlice = createSlice({
     },
     toggleLogoutMenuOpen: (state, action) => {
       state.logoutMenuOpen = !state.logoutMenuOpen;
+    },
+    toggleRightContextDrawerOpen: (state, action) => {
+      state.rightContextDrawerIsOpen = (action.payload);
     }
   },
 });
 
 export const toggleReducer = toggleSlice.reducer;
-export const { toggleLeftSideMenu, toggleLogoutMenuOpen } = toggleSlice.actions;
+export const { toggleLeftSideMenu, toggleLogoutMenuOpen, toggleRightContextDrawerOpen } = toggleSlice.actions;
 
