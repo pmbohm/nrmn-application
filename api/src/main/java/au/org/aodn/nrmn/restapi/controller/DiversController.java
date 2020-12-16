@@ -28,13 +28,11 @@ public class DiversController {
 
     @GetMapping("/sites.csv")
     public void getSitesCsv(final HttpServletResponse response,
-                            @RequestParam(required = false) List<String> provinces,
-                            @RequestParam(required = false) List<String> siteCodes) throws IOException {
+                            @RequestParam (required = false) List<Integer> locations,
+                            @RequestParam (required = false) List<String> provinces,
+                            @RequestParam (required = false) List<String> states,
+                            @RequestParam (required = false) List<String> siteCodes) throws IOException {
         response.setContentType("application/csv");
-        csvService.getSitesCsv(response.getWriter(),
-                null,
-                provinces,
-                null,
-                siteCodes);
+        csvService.getSitesCsv(response.getWriter(), locations, provinces, states, siteCodes);
     }
 }

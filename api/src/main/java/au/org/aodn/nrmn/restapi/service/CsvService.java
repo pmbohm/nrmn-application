@@ -34,6 +34,7 @@ public class CsvService {
     @Autowired
     SiteRepository siteRepository;
 
+
     public void getDiversCsv(PrintWriter writer) throws IOException {
         CSVPrinter csvPrinter = DIVERS_FORMAT.print(writer);
         List<Diver> divers = diverRepository.findAll();
@@ -48,13 +49,11 @@ public class CsvService {
     }
 
     public void getSitesCsv(PrintWriter writer,
-                            Collection<Location> locations,
+                            Collection<Integer> locations,
                             Collection<String> provinces,
                             Collection<String> states,
                             Collection<String> siteCodes) throws IOException {
         CSVPrinter csvPrinter = SITES_FORMAT.print(writer);
-
-        Site site = siteRepository.getOne(602);
 
         Stream<String> siteCodesFromProvinces = provinces == null ? Stream.empty() : provinces.stream()
                 .distinct()
@@ -66,11 +65,27 @@ public class CsvService {
                 .distinct()
                 .flatMap(sc -> siteRepository.findAll(Example.of(Site.builder().siteCode(sc).build())).stream());
 
+
+        if(locations != null) {
+            sites = Stream.concat(sites, locations.stream()
+                    .distinct()
+                    .flatMap(l -> siteRepository.findAll(
+                            Example.of(Site.builder()
+                                    .location(Location.builder().locationId(l).build()).build())).stream()));
+        }
+
+        if(states != null) {
+            sites = Stream.concat(sites, states.stream()
+                    .distinct()
+                    .flatMap(s -> siteRepository.findAll(Example.of(Site.builder().state(s).build())).stream()));
+        }
+
         List<List<String>> records = sites
                 .distinct()
                 .sorted(Comparator.comparing(Site::getSiteCode))
                 .map(this::getSiteAsCsvRecord)
                 .collect(toList());
+
 
         csvPrinter.printRecords(records);
     }
