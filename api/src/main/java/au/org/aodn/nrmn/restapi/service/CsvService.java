@@ -40,6 +40,7 @@ public class CsvService {
         List<Diver> divers = diverRepository.findAll();
         List<List<String>> records = divers.stream()
                 .filter(d -> d.getInitials().matches("[A-Z]*"))
+                .sorted(Comparator.comparing(Diver::getInitials))
                 .map(this::getDiverAsCsvRecord).collect(toList());
         csvPrinter.printRecords(records);
     }
@@ -85,7 +86,6 @@ public class CsvService {
                 .sorted(Comparator.comparing(Site::getSiteCode))
                 .map(this::getSiteAsCsvRecord)
                 .collect(toList());
-
 
         csvPrinter.printRecords(records);
     }
