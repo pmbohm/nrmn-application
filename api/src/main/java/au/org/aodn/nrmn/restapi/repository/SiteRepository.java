@@ -40,7 +40,7 @@ public interface SiteRepository extends JpaRepository<Site, Integer>, JpaSpecifi
     @RestResource
     void delete(Site site);
 
-    @Query(nativeQuery = true, value = "SELECT site_code FROM ep_site_list WHERE province = ?1")
+    @Query(nativeQuery = true, value = "SELECT site_code FROM {h-schema}ep_site_list WHERE province = ?1")
     Collection<String> findSiteCodesByProvince(String province);
 
 }

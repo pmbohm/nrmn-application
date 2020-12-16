@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,11 +27,13 @@ public class DiversController {
 
 
     @GetMapping("/sites.csv")
-    public void getSitesCsv(final HttpServletResponse response, List<String> siteCodes) throws IOException {
+    public void getSitesCsv(final HttpServletResponse response,
+                            @RequestParam(required = false) List<String> provinces,
+                            @RequestParam(required = false) List<String> siteCodes) throws IOException {
         response.setContentType("application/csv");
         csvService.getSitesCsv(response.getWriter(),
                 null,
-                null,
+                provinces,
                 null,
                 siteCodes);
     }

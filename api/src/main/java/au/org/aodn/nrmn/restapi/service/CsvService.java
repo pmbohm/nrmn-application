@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -29,6 +30,7 @@ public class CsvService {
 
     @Autowired
     DiverRepository diverRepository;
+
     @Autowired
     SiteRepository siteRepository;
 
@@ -52,6 +54,7 @@ public class CsvService {
                             Collection<String> siteCodes) throws IOException {
         CSVPrinter csvPrinter = SITES_FORMAT.print(writer);
 
+        Site site = siteRepository.getOne(602);
 
         Stream<String> siteCodesFromProvinces = provinces == null ? Stream.empty() : provinces.stream()
                 .distinct()
@@ -63,8 +66,13 @@ public class CsvService {
                 .distinct()
                 .flatMap(sc -> siteRepository.findAll(Example.of(Site.builder().siteCode(sc).build())).stream());
 
-        sites.distinct().sorted(Comparator.comparing(Site::getSiteCode));
+        List<List<String>> records = sites
+                .distinct()
+                .sorted(Comparator.comparing(Site::getSiteCode))
+                .map(this::getSiteAsCsvRecord)
+                .collect(toList());
 
+        csvPrinter.printRecords(records);
     }
 
     private List<String> getSiteAsCsvRecord(Site site) {
