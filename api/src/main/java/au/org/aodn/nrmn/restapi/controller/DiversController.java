@@ -1,6 +1,6 @@
 package au.org.aodn.nrmn.restapi.controller;
 
-import au.org.aodn.nrmn.restapi.service.CsvService;
+import au.org.aodn.nrmn.restapi.service.TemplateService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +17,12 @@ import java.util.List;
 @Tag(name = "divers")
 public class DiversController {
     @Autowired
-    private CsvService csvService;
+    private TemplateService templateService;
 
     @GetMapping("/divers.csv")
     public void getCsv(final HttpServletResponse response) throws IOException {
         response.setContentType("application/csv");
-        csvService.getDiversCsv(response.getWriter());
+        templateService.writeDiversCsv(response.getWriter(), templateService.getDiversForTemplate());
     }
 
 
@@ -33,6 +33,7 @@ public class DiversController {
                             @RequestParam (required = false) List<String> states,
                             @RequestParam (required = false) List<String> siteCodes) throws IOException {
         response.setContentType("application/csv");
-        csvService.getSitesCsv(response.getWriter(), locations, provinces, states, siteCodes);
+        templateService.writeSitesCsv(response.getWriter(),
+                templateService.getSitesForTemplate(locations, provinces, states, siteCodes));
     }
 }
