@@ -86,7 +86,11 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         val jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        val user = userService.getUserByName(authentication.getName());
+        if (!user.isPresent()) {
+            return ResponseEntity.status(400).build();
+        }
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, user.get().getEmail(), user.get().getRoles()));
     }
 
     @PostMapping(path = "/signup", consumes = "application/json", produces = "application/json")

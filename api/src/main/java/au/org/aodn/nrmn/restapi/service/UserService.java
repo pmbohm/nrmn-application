@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class UserService extends ValidatorHelpers {
@@ -30,6 +31,11 @@ public class UserService extends ValidatorHelpers {
 
     @Autowired
     SecUserRepository userRepo;
+
+    public Optional<SecUser> getUserByName(String name) {
+        return userRepo.findByEmail(name);
+
+    }
 
     public Validated<ErrorInput, SecUser> createUser(SignUpRequest signupReq) {
         val emailValid =
