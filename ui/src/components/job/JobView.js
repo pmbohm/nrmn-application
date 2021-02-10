@@ -95,7 +95,7 @@ const JobView = () => {
                             <Divider style={{ marginTop: 15, marginBottom: 15 }}></Divider>
                             <Grid>
                                 <Grid item>
-                                    <Typography>created by:  {job.creator.email}  at  {job.created} </Typography>
+                                    <Typography>Created by:  {job.creator.email}  at  {job.created} </Typography>
                                 </Grid>
                             </Grid>
                         </Paper>
