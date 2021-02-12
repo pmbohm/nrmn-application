@@ -3,9 +3,8 @@ import axios from 'axios';
 import store from '../components/store'; // will be useful to access to axios.all and axios.spread
 import {ImportProgress} from '../components/import/reducers/upload';
 function getToken() {
-  const auth = store.getState().auth;
-  const token = auth.accessToken;
-  const tokenType = auth.tokenType;
+  const token = store.getState().auth.accessToken;
+  const tokenType = store.getState().auth.tokenType;
   return `${tokenType} ${token}`;
 }
 

@@ -76,7 +76,6 @@ const BaseForm = (params) => {
             showErrorList={true}
             fields={params.fields}
             formData={params.formData}
-            ObjectFieldTemplate={params.template}
           >
             <div className={classes.rootFlex}>
               <div className={classes.wrapper}>
